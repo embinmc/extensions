@@ -6,7 +6,7 @@
 (function(Scratch) {
     'use strict';
 
-    const embin_utils_version = 'v1.20.2';
+    const embin_utils_version = 'v1.20.3';
 
     if (!Scratch.extensions.unsandboxed) {
       //console.warn('Extension is being run in sandbox mode.');  
@@ -260,6 +260,19 @@
               blockType: Scratch.BlockType.BOOLEAN,
               disableMonitor: true,
               text: '[mouse] mouse button down?',
+              arguments: {
+                mouse: {
+                  type: Scratch.ArgumentType.STRING,
+                  defaultValue: '(0) primary',
+                  menu: 'mouse'
+                }
+              }
+            },
+            {
+              opcode: 'is_mouse_clicked',
+              blockType: Scratch.BlockType.BOOLEAN,
+              disableMonitor: true,
+              text: '[mouse] mouse button clicked?',
               arguments: {
                 mouse: {
                   type: Scratch.ArgumentType.STRING,
@@ -3598,6 +3611,11 @@
           const minutes = Math.floor((total / 60) % 60).toString().padStart(2, "0");
           const hours = Math.floor(total / 3600).toString().padStart(2, "0");
           return `${hours}:${minutes}:${seconds}`;
+        }
+
+        is_mouse_clicked(args, util) {
+          const mbutton = Cast.toNumber(args.mouse);
+          return util.ioQuery('mouse', 'getIsClicked', [mbutton]);
         }
 
       } // end of blocks code
